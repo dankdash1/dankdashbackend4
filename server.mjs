@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import pool, { testConnection } from "./db.mjs";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,6 +54,12 @@ app.use((err, _req, res, _next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server listening on :${PORT}`);
+  
+  // Test database connection
+  const dbConnected = await testConnection();
+  if (!dbConnected) {
+    console.warn('[DB] Server started but database connection failed');
+  }
 });
