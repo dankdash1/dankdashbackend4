@@ -36,6 +36,7 @@ CORS(app, origins=[
     "https://dankdask-frontend4-production-1762.up.railway.app",
     "https://dankdask-frontend4-3yvv5zwhy-george-escobars-projects.vercel.app",
     "https://dankdask-frontend4-git-main-george-escobars-projects.vercel.app",
+    "https://*.vercel.app",
     "https://web-production-52f4.up.railway.app",
     "http://localhost:3000",
     "http://localhost:5173", 
