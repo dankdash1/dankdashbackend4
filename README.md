@@ -21,4 +21,4 @@ python src/main.py
 ```bash
 railway up
 ```
-# Force redeploy - inventory management ready - database schema fixed v2
+# Force redeploy - inventory management ready - FORCE UPDATE NOW
