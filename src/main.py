@@ -31,9 +31,10 @@ from src.database_config import db_config
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
-# Enable CORS for frontend Railway domain
+# Enable CORS for frontend domains
 CORS(app, origins=[
     "https://dankdask-frontend4-production-1762.up.railway.app",
+    "https://dankdask-frontend4-3yvv5zwhy-george-escobars-projects.vercel.app",
     "https://web-production-52f4.up.railway.app",
     "http://localhost:3000",
     "http://localhost:5173", 
