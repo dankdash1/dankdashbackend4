@@ -27,7 +27,7 @@ from src.routes.device_routes import device_bp
 from src.routes.inventory_routes import inventory_bp as inventory_management_bp
 from src.database_config import db_config
 
-app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
 # Enable CORS for frontend Railway domain
