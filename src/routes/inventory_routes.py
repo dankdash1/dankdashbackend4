@@ -6,85 +6,26 @@ from decimal import Decimal
 
 inventory_bp = Blueprint('inventory', __name__)
 
+@inventory_bp.route('/inventory/test', methods=['GET'])
+def test_inventory_route():
+    """Simple test route to verify inventory blueprint works"""
+    return jsonify({
+        'success': True,
+        'message': 'Inventory blueprint is working!',
+        'routes_available': ['GET /api/inventory/test', 'GET /api/inventory', 'POST /api/inventory']
+    }), 200
+
 @inventory_bp.route('/inventory', methods=['GET'])
 def get_inventory():
-    """Get all inventory items with filtering and search"""
+    """Simplified inventory route for debugging"""
     try:
-        conn = db_config.get_connection()
-        cursor = conn.cursor()
-        
-        # Get query parameters for filtering
-        category = request.args.get('category')
-        status = request.args.get('status', 'active')
-        search = request.args.get('search')
-        low_stock = request.args.get('low_stock', 'false').lower() == 'true'
-        
-        # Build query with filters
-        query = """
-            SELECT id, sku, name, category, subcategory, description, 
-                   price, cost, stock_quantity, reserved_quantity, min_stock_level,
-                   unit, weight_grams, thc_percentage, cbd_percentage, strain_type,
-                   brand, supplier, status, created_at, updated_at
-            FROM inventory 
-            WHERE 1=1
-        """
-        params = []
-        
-        if status:
-            query += " AND status = %s"
-            params.append(status)
-            
-        if category:
-            query += " AND category = %s"
-            params.append(category)
-            
-        if search:
-            query += " AND (name ILIKE %s OR sku ILIKE %s OR brand ILIKE %s)"
-            search_param = f"%{search}%"
-            params.extend([search_param, search_param, search_param])
-            
-        if low_stock:
-            query += " AND stock_quantity <= min_stock_level"
-            
-        query += " ORDER BY name ASC"
-        
-        cursor.execute(query, params)
-        items = cursor.fetchall()
-        conn.close()
-        
-        # Convert to list of dictionaries
-        inventory_list = []
-        for item in items:
-            inventory_list.append({
-                'id': item['id'],
-                'sku': item['sku'],
-                'name': item['name'],
-                'category': item['category'],
-                'subcategory': item['subcategory'],
-                'description': item['description'],
-                'price': float(item['price']) if item['price'] else None,
-                'cost': float(item['cost']) if item['cost'] else None,
-                'stock_quantity': item['stock_quantity'],
-                'reserved_quantity': item['reserved_quantity'],
-                'available_quantity': item['stock_quantity'] - (item['reserved_quantity'] or 0),
-                'min_stock_level': item['min_stock_level'],
-                'unit': item['unit'],
-                'weight_grams': float(item['weight_grams']) if item['weight_grams'] else None,
-                'thc_percentage': float(item['thc_percentage']) if item['thc_percentage'] else None,
-                'cbd_percentage': float(item['cbd_percentage']) if item['cbd_percentage'] else None,
-                'strain_type': item['strain_type'],
-                'brand': item['brand'],
-                'supplier': item['supplier'],
-                'status': item['status'],
-                'low_stock': item['stock_quantity'] <= item['min_stock_level'],
-                'created_at': item['created_at'].isoformat() if item['created_at'] else None,
-                'updated_at': item['updated_at'].isoformat() if item['updated_at'] else None
-            })
-        
+        # Simplified response without database for now
         return jsonify({
             'success': True,
-            'inventory': inventory_list,
-            'count': len(inventory_list)
+            'message': 'Inventory API is working!',
+            'inventory': [],
+            'count': 0,
+            'note': 'Database query temporarily disabled for debugging'
         }), 200
         
     except Exception as e:
