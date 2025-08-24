@@ -1,0 +1,3 @@
+URGENT: Railway must deploy the latest inventory management API
+Commit needed: Latest with all inventory routes and database fixes
+Timestamp: Aug 24, 2025 - Force deployment trigger
