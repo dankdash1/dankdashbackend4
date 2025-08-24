@@ -83,6 +83,7 @@ with app.app_context():
 
 @app.route('/')
 def root():
+    from flask import jsonify
     return jsonify({
         'message': 'DankDash Backend API',
         'status': 'running',

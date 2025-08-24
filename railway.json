@@ -4,6 +4,6 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "python src/main.py"
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT src.main:app"
   }
 }
