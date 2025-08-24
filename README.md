@@ -21,4 +21,4 @@ python src/main.py
 ```bash
 railway up
 ```
-# Force redeploy - inventory management ready - FORCE UPDATE NOW
+# Force redeploy - inventory management ready - URGENT UPDATE NEEDED
