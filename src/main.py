@@ -32,7 +32,8 @@ app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
 # Enable CORS for frontend Railway domain
 CORS(app, origins=[
-    "https://*.up.railway.app",
+    "https://dankdask-frontend4-production-1762.up.railway.app",
+    "https://web-production-52f4.up.railway.app",
     "http://localhost:3000",
     "http://localhost:5173", 
     "http://localhost:5174",
