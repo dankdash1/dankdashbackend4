@@ -131,6 +131,53 @@ class DatabaseConfig:
             )
         ''')
         
+        # Inventory table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS inventory (
+                id SERIAL PRIMARY KEY,
+                sku VARCHAR(100) UNIQUE NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                category VARCHAR(100) NOT NULL,
+                subcategory VARCHAR(100),
+                description TEXT,
+                price DECIMAL(10,2) NOT NULL,
+                cost DECIMAL(10,2),
+                stock_quantity INTEGER NOT NULL DEFAULT 0,
+                reserved_quantity INTEGER DEFAULT 0,
+                min_stock_level INTEGER DEFAULT 5,
+                max_stock_level INTEGER,
+                unit VARCHAR(50) DEFAULT 'each',
+                weight_grams DECIMAL(10,3),
+                thc_percentage DECIMAL(5,2),
+                cbd_percentage DECIMAL(5,2),
+                strain_type VARCHAR(50),
+                brand VARCHAR(100),
+                supplier VARCHAR(100),
+                batch_number VARCHAR(100),
+                expiry_date DATE,
+                lab_tested BOOLEAN DEFAULT false,
+                lab_results TEXT,
+                status VARCHAR(50) DEFAULT 'active',
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            )
+        ''')
+
+        # Inventory adjustments table (for tracking stock changes)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS inventory_adjustments (
+                id SERIAL PRIMARY KEY,
+                inventory_id INTEGER REFERENCES inventory(id) ON DELETE CASCADE,
+                adjustment_type VARCHAR(50) NOT NULL,
+                quantity_change INTEGER NOT NULL,
+                reason VARCHAR(255),
+                reference_id VARCHAR(100),
+                notes TEXT,
+                created_by VARCHAR(100),
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            )
+        ''')
+        
         # Devices table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS devices (
