@@ -23,13 +23,22 @@ from src.routes.dashboard_routes import dashboard_bp
 from src.routes.enhanced_pos_routes import enhanced_pos_bp
 from src.routes.order_management_routes import order_management_bp
 from src.routes.voice_ai_routes import voice_ai_bp
+from src.routes.device_routes import device_bp
 from src.database_config import db_config
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
-# Enable CORS for all routes
-CORS(app)
+# Enable CORS for frontend Railway domain
+CORS(app, origins=[
+    "https://*.up.railway.app",
+    "http://localhost:3000",
+    "http://localhost:5173", 
+    "http://localhost:5174",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174"
+])
 
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(twilio_bp)
@@ -46,16 +55,28 @@ app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
 app.register_blueprint(enhanced_pos_bp, url_prefix='/api/pos')
 app.register_blueprint(order_management_bp, url_prefix='/api')
 app.register_blueprint(voice_ai_bp, url_prefix='/api')
+app.register_blueprint(device_bp, url_prefix='/api')
 
-# uncomment if you need to use database
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///dankdash.db')
+# PostgreSQL database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 with app.app_context():
-    db.create_all()
-    # Initialize database tables for both SQLite and PostgreSQL
-    db_config.init_database()
+    try:
+        # Test database connection
+        conn = db_config.get_connection()
+        conn.close()
+        
+        db.create_all()
+        # Initialize database tables for PostgreSQL
+        db_config.init_database()
+        
+        print(f"✓ PostgreSQL database connected successfully")
+        print(f"✓ Database URL: {os.environ.get('DATABASE_URL', 'Not set')}")
+    except Exception as e:
+        print(f"✗ Database connection failed: {e}")
+        raise
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
