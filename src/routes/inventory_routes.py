@@ -2,9 +2,8 @@ from flask import Blueprint, request, jsonify
 from src.database_config import db_config
 import psycopg2
 from datetime import datetime
-from decimal import Decimal
 
-inventory_bp = Blueprint('inventory', __name__)
+inventory_bp = Blueprint('inventory_management', __name__)
 
 @inventory_bp.route('/inventory/test', methods=['GET'])
 def test_inventory_route():
