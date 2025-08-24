@@ -21,4 +21,4 @@ python src/main.py
 ```bash
 railway up
 ```
-# Force redeploy - inventory management ready
+# Force redeploy - inventory management ready - commit 726242a
