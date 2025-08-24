@@ -25,6 +25,7 @@ from src.routes.order_management_routes import order_management_bp
 from src.routes.voice_ai_routes import voice_ai_bp
 from src.routes.device_routes import device_bp
 from src.routes.inventory_routes import inventory_bp as inventory_management_bp
+from src.routes.frontend_api_routes import frontend_api_bp
 from src.database_config import db_config
 
 app = Flask(__name__)
@@ -59,7 +60,9 @@ app.register_blueprint(order_management_bp, url_prefix='/api')
 app.register_blueprint(voice_ai_bp, url_prefix='/api')
 app.register_blueprint(device_bp, url_prefix='/api')
 app.register_blueprint(inventory_management_bp, url_prefix='/api')
+app.register_blueprint(frontend_api_bp, url_prefix='/api')
 print("✓ Registered inventory_management blueprint at /api")
+print("✓ Registered frontend_api blueprint at /api")
 
 # PostgreSQL database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
