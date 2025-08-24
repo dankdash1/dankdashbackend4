@@ -80,8 +80,12 @@ class DatabaseConfig:
         ''')
         
         # Drop and recreate inventory table to ensure schema is correct
-        cursor.execute('DROP TABLE IF EXISTS inventory_adjustments CASCADE')
-        cursor.execute('DROP TABLE IF EXISTS inventory CASCADE')
+        try:
+            cursor.execute('DROP TABLE IF EXISTS inventory_adjustments CASCADE')
+            cursor.execute('DROP TABLE IF EXISTS inventory CASCADE')
+            print("✓ Dropped existing inventory tables")
+        except Exception as e:
+            print(f"Info: {e}")  # Table might not exist yet
         
         # Enhanced Inventory table with cannabis-specific fields
         cursor.execute('''
