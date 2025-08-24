@@ -38,9 +38,11 @@ CORS(app, origins=[
     "http://localhost:3000",
     "http://localhost:5173", 
     "http://localhost:5174",
+    "http://localhost:5176",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:5174"
+    "http://127.0.0.1:5174",
+    "http://127.0.0.1:5176"
 ])
 
 app.register_blueprint(user_bp, url_prefix='/api')
