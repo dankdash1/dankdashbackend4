@@ -14,6 +14,63 @@ def test_inventory_route():
         'routes_available': ['GET /api/inventory/test', 'GET /api/inventory', 'POST /api/inventory']
     }), 200
 
+@inventory_bp.route('/inventory/fix-schema', methods=['POST'])
+def fix_inventory_schema():
+    """Force recreate inventory table with correct schema"""
+    try:
+        conn = db_config.get_connection()
+        cursor = conn.cursor()
+        
+        # Drop and recreate tables
+        cursor.execute('DROP TABLE IF EXISTS inventory_adjustments CASCADE')
+        cursor.execute('DROP TABLE IF EXISTS inventory CASCADE')
+        
+        # Create inventory table
+        cursor.execute('''
+            CREATE TABLE inventory (
+                id SERIAL PRIMARY KEY,
+                sku VARCHAR(100) UNIQUE NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                category VARCHAR(100) NOT NULL,
+                subcategory VARCHAR(100),
+                description TEXT,
+                price DECIMAL(10,2) NOT NULL,
+                cost DECIMAL(10,2),
+                stock_quantity INTEGER NOT NULL DEFAULT 0,
+                reserved_quantity INTEGER DEFAULT 0,
+                min_stock_level INTEGER DEFAULT 5,
+                max_stock_level INTEGER,
+                unit VARCHAR(50) DEFAULT 'each',
+                weight_grams DECIMAL(10,3),
+                thc_percentage DECIMAL(5,2),
+                cbd_percentage DECIMAL(5,2),
+                strain_type VARCHAR(50),
+                brand VARCHAR(100),
+                supplier VARCHAR(100),
+                batch_number VARCHAR(100),
+                expiry_date DATE,
+                lab_tested BOOLEAN DEFAULT false,
+                lab_results TEXT,
+                status VARCHAR(50) DEFAULT 'active',
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            )
+        ''')
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Inventory schema fixed successfully'
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Failed to fix schema: {str(e)}'
+        }), 500
+
 @inventory_bp.route('/inventory', methods=['GET'])
 def get_inventory():
     """Get all inventory items with optional filtering"""
