@@ -79,9 +79,13 @@ class DatabaseConfig:
             )
         ''')
         
+        # Drop and recreate inventory table to ensure schema is correct
+        cursor.execute('DROP TABLE IF EXISTS inventory_adjustments CASCADE')
+        cursor.execute('DROP TABLE IF EXISTS inventory CASCADE')
+        
         # Enhanced Inventory table with cannabis-specific fields
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS inventory (
+            CREATE TABLE inventory (
                 id SERIAL PRIMARY KEY,
                 sku VARCHAR(100) UNIQUE NOT NULL,
                 name VARCHAR(255) NOT NULL,
@@ -113,7 +117,7 @@ class DatabaseConfig:
 
         # Inventory adjustments table (for tracking stock changes)
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS inventory_adjustments (
+            CREATE TABLE inventory_adjustments (
                 id SERIAL PRIMARY KEY,
                 inventory_id INTEGER REFERENCES inventory(id) ON DELETE CASCADE,
                 adjustment_type VARCHAR(50) NOT NULL,
