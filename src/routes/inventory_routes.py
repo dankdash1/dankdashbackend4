@@ -6,6 +6,11 @@ from decimal import Decimal
 
 inventory_bp = Blueprint('inventory', __name__)
 
+@inventory_bp.route('/test', methods=['GET'])
+def test_route():
+    """Test route to confirm inventory blueprint is working"""
+    return jsonify({'message': 'Inventory blueprint is working!'}), 200
+
 @inventory_bp.route('/inventory', methods=['GET'])
 def get_inventory():
     """Get all inventory items with filtering and search"""
