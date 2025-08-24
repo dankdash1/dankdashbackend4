@@ -98,4 +98,12 @@ def serve(path):
 
 
 if __name__ == '__main__':
+    print("🚀 Starting DankDash Backend with Device & Inventory APIs")
+    print("📋 Available endpoints:")
+    print("   - GET /api/devices")
+    print("   - POST /api/devices") 
+    print("   - POST /api/devices/<id>/status")
+    print("   - GET /api/inventory")
+    print("   - POST /api/inventory")
+    print("   - GET /api/inventory/test")
     app.run(host='0.0.0.0', port=5001, debug=True)
