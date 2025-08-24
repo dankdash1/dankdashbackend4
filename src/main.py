@@ -24,7 +24,7 @@ from src.routes.enhanced_pos_routes import enhanced_pos_bp
 from src.routes.order_management_routes import order_management_bp
 from src.routes.voice_ai_routes import voice_ai_bp
 from src.routes.device_routes import device_bp
-from src.routes.inventory_routes import inventory_bp
+from src.routes.inventory_routes import inventory_bp as inventory_management_bp
 from src.database_config import db_config
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
@@ -57,7 +57,7 @@ app.register_blueprint(enhanced_pos_bp, url_prefix='/api/pos')
 app.register_blueprint(order_management_bp, url_prefix='/api')
 app.register_blueprint(voice_ai_bp, url_prefix='/api')
 app.register_blueprint(device_bp, url_prefix='/api')
-app.register_blueprint(inventory_bp, url_prefix='/api')
+app.register_blueprint(inventory_management_bp, url_prefix='/api')
 
 # PostgreSQL database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -87,8 +87,9 @@ def root():
         'status': 'running',
         'endpoints': {
             'inventory': '/api/inventory',
+            'inventory_test': '/api/inventory/test',
             'devices': '/api/devices',
-            'test': '/api/inventory/test'
+            'low_stock': '/api/inventory/low-stock'
         }
     })
 
