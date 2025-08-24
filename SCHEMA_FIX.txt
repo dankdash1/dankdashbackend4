@@ -1,0 +1,4 @@
+Manual database schema fix endpoint added
+Endpoint: POST /api/inventory/fix-schema
+Purpose: Force recreate inventory table with correct schema
+Deploy timestamp: Aug 24, 2025
