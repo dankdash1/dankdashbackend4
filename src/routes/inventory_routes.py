@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify
 from src.database_config import db_config
-import psycopg2
 from datetime import datetime
-from decimal import Decimal
 
 inventory_bp = Blueprint('inventory', __name__)
 
