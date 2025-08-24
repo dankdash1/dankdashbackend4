@@ -16,15 +16,81 @@ def test_inventory_route():
 
 @inventory_bp.route('/inventory', methods=['GET'])
 def get_inventory():
-    """Simplified inventory route for debugging"""
+    """Get all inventory items with optional filtering"""
     try:
-        # Simplified response without database for now
+        category = request.args.get('category')
+        status = request.args.get('status', 'active')
+        low_stock = request.args.get('low_stock', 'false').lower() == 'true'
+        
+        conn = db_config.get_connection()
+        cursor = conn.cursor()
+        
+        # Build query based on filters
+        query = """
+            SELECT id, sku, name, category, subcategory, description, 
+                   price, cost, stock_quantity, reserved_quantity,
+                   min_stock_level, max_stock_level, unit, weight_grams,
+                   thc_percentage, cbd_percentage, strain_type, brand,
+                   supplier, batch_number, expiry_date, lab_tested,
+                   lab_results, status, created_at, updated_at
+            FROM inventory 
+            WHERE status = %s
+        """
+        params = [status]
+        
+        if category:
+            query += " AND category = %s"
+            params.append(category)
+            
+        if low_stock:
+            query += " AND stock_quantity <= min_stock_level"
+            
+        query += " ORDER BY created_at DESC"
+        
+        cursor.execute(query, params)
+        items = cursor.fetchall()
+        conn.close()
+        
+        inventory_items = []
+        for item in items:
+            inventory_items.append({
+                'id': item['id'],
+                'sku': item['sku'],
+                'name': item['name'],
+                'category': item['category'],
+                'subcategory': item['subcategory'],
+                'description': item['description'],
+                'price': float(item['price']) if item['price'] else None,
+                'cost': float(item['cost']) if item['cost'] else None,
+                'stock_quantity': item['stock_quantity'],
+                'reserved_quantity': item['reserved_quantity'],
+                'min_stock_level': item['min_stock_level'],
+                'max_stock_level': item['max_stock_level'],
+                'unit': item['unit'],
+                'weight_grams': float(item['weight_grams']) if item['weight_grams'] else None,
+                'thc_percentage': float(item['thc_percentage']) if item['thc_percentage'] else None,
+                'cbd_percentage': float(item['cbd_percentage']) if item['cbd_percentage'] else None,
+                'strain_type': item['strain_type'],
+                'brand': item['brand'],
+                'supplier': item['supplier'],
+                'batch_number': item['batch_number'],
+                'expiry_date': item['expiry_date'].isoformat() if item['expiry_date'] else None,
+                'lab_tested': item['lab_tested'],
+                'lab_results': item['lab_results'],
+                'status': item['status'],
+                'created_at': item['created_at'].isoformat(),
+                'updated_at': item['updated_at'].isoformat()
+            })
+        
         return jsonify({
             'success': True,
-            'message': 'Inventory API is working!',
-            'inventory': [],
-            'count': 0,
-            'note': 'Database query temporarily disabled for debugging'
+            'inventory': inventory_items,
+            'count': len(inventory_items),
+            'filters_applied': {
+                'category': category,
+                'status': status,
+                'low_stock_only': low_stock
+            }
         }), 200
         
     except Exception as e:
