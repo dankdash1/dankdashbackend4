@@ -58,6 +58,7 @@ app.register_blueprint(order_management_bp, url_prefix='/api')
 app.register_blueprint(voice_ai_bp, url_prefix='/api')
 app.register_blueprint(device_bp, url_prefix='/api')
 app.register_blueprint(inventory_management_bp, url_prefix='/api')
+print("✓ Registered inventory_management blueprint at /api")
 
 # PostgreSQL database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
