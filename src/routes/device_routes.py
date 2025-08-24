@@ -169,3 +169,12 @@ def update_device_status(device_id):
             'success': False,
             'error': f'Failed to update device status: {str(e)}'
         }), 500
+
+@device_bp.route('/inventory-debug', methods=['GET'])
+def debug_inventory_in_device():
+    """Debug route to test if inventory can work from device blueprint"""
+    return jsonify({
+        'success': True,
+        'message': 'Inventory debug route working from device blueprint!',
+        'note': 'This proves the issue is with inventory_routes.py file'
+    }), 200
