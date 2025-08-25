@@ -33,7 +33,7 @@ app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
 # Enable CORS for frontend domains
 CORS(app, origins=["https://dankdask-frontend4-bxe7ozarw-george-escobars-projects.vercel.app
-  ",
+  ","])
     "https://dankdask-frontend4-production-1762.up.railway.app",
     "https://dankdask-frontend4-3yvv5zwhy-george-escobars-projects.vercel.app",
     "https://dankdask-frontend4-git-main-george-escobars-projects.vercel.app",
