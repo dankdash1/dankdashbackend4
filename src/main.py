@@ -32,21 +32,22 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
 # Enable CORS for frontend domains
-CORS(app, origins=["https://dankdask-frontend4-bxe7ozarw-george-escobars-projects.vercel.app"])
-    "https://dankdask-frontend4-production-1762.up.railway.app",
-    "https://dankdask-frontend4-3yvv5zwhy-george-escobars-projects.vercel.app",
-    "https://dankdask-frontend4-git-main-george-escobars-projects.vercel.app",
-    "https://dankdask-frontend4-q621xyq69-george-escobars-projects.vercel.app",
-    "https://web-production-52f4.up.railway.app",
-    "http://localhost:3000",
-    "http://localhost:5173", 
-    "http://localhost:5174",
-    "http://localhost:5176",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:5174",
-    "http://127.0.0.1:5176"
-])
+  CORS(app, origins=[
+      "https://dankdask-frontend4-bxe7ozarw-george-escobars-projects.vercel.app",
+      "https://dankdask-frontend4-production-1762.up.railway.app",
+      "https://dankdask-frontend4-3yvv5zwhy-george-escobars-projects.vercel.app",
+      "https://dankdask-frontend4-git-main-george-escobars-projects.vercel.app",
+      "https://dankdask-frontend4-q621xyq69-george-escobars-projects.vercel.app",
+      "https://web-production-52f4.up.railway.app",
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5176",
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:5173",
+      "http://127.0.0.1:5174",
+      "http://127.0.0.1:5176"
+  ])
 
 app.register_blueprint(user_bp, url_prefix='/api')
 app.register_blueprint(twilio_bp)
